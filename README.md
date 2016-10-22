@@ -1,7 +1,17 @@
 # chat-example
 
-This is the source code for a very simple chat example used for 
-the [Getting Started](http://socket.io/get-started/chat/) guide 
-of the Socket.IO website.
+This chat application is built with socket.io, javascript, jquery.
 
-Please refer to it to learn how to run this application.
+It allows multi users to join the chatroom. 
+
+---Functions to come in soon---
+  Broadcast a message to connected users when someone connects or disconnects
+  Add support for nicknames
+  Don’t send the same message to the user that sent it himself. Instead, append the message directly as soon as he presses enter.
+  Add “{user} is typing” functionality
+  Show who’s online
+  Add private messaging
+  Share your improvements!
+
+Thanks
+Seunghun Lee
