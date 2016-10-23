@@ -13,44 +13,61 @@
       #messages li:nth-child(odd) { background: #eee; }
     </style>
     
-    <link rel="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
     
     <style>
       #messageArea { display: none; }
+      #messageForm { display: none; }
     </style>
   </head>
   <body>
     <div class="container">
-      <div id="userFormArea" class="row">
-        <div class="col-sm-3">
-          <form id="userForm" action="">
-            <div class="form-gorup">
-              <label>Enter Username</label>
-              <input class="form-control" id="username" autocomplete="off" />
-              <br />
-              <input type="submit" class="btn btn-primary" value="Login" />
+      <div class="row">
+        <div id="userFormArea">
+          <div class="col-sm-3">
+            <form id="userForm" action="">
+              <div class="form-gorup">
+                <label>Enter Username</label>
+                <input class="form-control" id="username" autocomplete="off" />
+                <br />
+                <input type="submit" class="btn btn-primary" value="Login" />
 
-            </div>
-          </form>  
-        </div>     
-      </div>
+              </div>
+            </form>  
+          </div>     
+        </div>
 
-    <div id="messageArea" class="row">    
-      <div class="col-sm-3">
+    <div id="messageArea">    
+      <div class="col-sm-4 pull-left">
         <div class="well">
           <h1>Online Users</h1>
           <ul class="list-group" id="users"></ul>
         </div>     
       </div>
+      
+      
+      <!-- User's own Message output -->
+      <div class="col-sm-6 pull-right">
+        <ul id="Userownmessages"></ul>
+      </div>
 
-      <ul id="messages"></ul>
-      <form id="messageForm" action="">
-        <input id="message" autocomplete="off" /><button>Send</button>
-      </form>
+      
+      <!-- Other users' Message output -->
+      <div class="col-sm-6 pull-left">
+        <ul id="Othersmessages"></ul>
+      </div>
+
     </div>
+
   </div>
+</div>
+
+    <!-- Message input -->
+    <form id="messageForm" action="">
+      <input id="message" autocomplete="off" /><button>Send</button>
+    </form>
     <script>
       
       var socket = io.connect();
@@ -70,6 +87,7 @@
           if(data){
             $('#userFormArea').hide();
             $('#messageArea').show();
+            $('#messageForm').show();
           }
         });
         $('#username').val('');
@@ -80,9 +98,15 @@
         socket.emit('send message', $('#message').val());
         $('#message').val('');
       });
+
       
       socket.on('new message', function(data) {
-        $('#messages').append('<div class="well"><li><strong>'+data.username+ '</strong>: '+data.msg + '</li></div>');
+        if(data.username == socketusername) {
+          $('#Userownmessages').append('<div class="well"><li><strong>'+data.username+ '</strong>: '+data.msg + '</li></div>');          
+        }
+        else {
+        $('#Othersmessages').append('<div class="well"><li><strong>'+data.username+ '</strong>: '+data.msg + '</li></div>');
+        }
       });
 
 

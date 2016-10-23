@@ -9,11 +9,11 @@ app.get('/', function(req, res){
 
 io.sockets.on('connection', function(socket){
   connectedUsers.push(socket);
-  console.log('Connected: %s socket is connected', connectedUsers.length);
 
+  console.log('Connected: %s sockets are connected', connectedUsers.length);
   // Send Message
   socket.on('send message', function(data){
-    io.sockets.emit('new message', {msg:data, username:socket.username});
+    io.sockets.emit('new message', {msg:data, username:socket.username, socketusername:users[connectedUsers.indexOf(socket)]});
   });
 
   // Disconnect 
